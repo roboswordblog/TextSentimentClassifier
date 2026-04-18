@@ -70,3 +70,17 @@ with torch.no_grad():
     predictions = torch.argmax(test_outputs, dim=1)
     accuracy = (predictions == y_test).float().mean()
     print(f"Test Accuracy: {accuracy.item():.4f}")
+with torch.no_grad():
+    model.eval()
+
+sentiment_map = {0: "Neutral", 1: "Negative", 2: "Positive"}
+
+user_input = input("\nEnter a message (or type 'quit' to stop): ")
+input_vector = vectorizer.transform([user_input]).toarray()
+input_tensor = torch.FloatTensor(input_vector)
+    
+with torch.no_grad():
+    output = model(input_tensor)
+    prediction = torch.argmax(output, dim=1).item()
+    
+    print(f"Predicted Sentiment: {sentiment_map[prediction]}")
